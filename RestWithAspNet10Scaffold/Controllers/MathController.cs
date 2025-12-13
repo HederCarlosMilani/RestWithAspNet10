@@ -32,6 +32,33 @@ namespace RestWithAspNet10Scaffold.Controllers
 			return BadRequest("Invalid Input Values");
 		}
 
+        [HttpGet("mult/{firstNumber}/{secondValue}")]
+        public IActionResult GetMult(string firstNumber, string secondValue)
+        {
+            if (IsNumeric(firstNumber) && IsNumeric(secondValue))
+            {
+                decimal multValue = ConvertToDecimal(firstNumber) * ConvertToDecimal(secondValue);
+                return Ok(multValue);
+            }
+            return BadRequest("Invalid Input Values");
+        }
+
+        [HttpGet("div/{firstNumber}/{secondValue}")]
+        public IActionResult GetDiv(string firstNumber, string secondValue)
+        {
+            if (IsNumeric(firstNumber) && IsNumeric(secondValue))
+            {
+                decimal divisor = ConvertToDecimal(secondValue);
+                if (divisor == 0)
+                {
+                    return BadRequest("Division by zero is not allowed.");
+                }
+                decimal divValue = ConvertToDecimal(firstNumber) / divisor;
+                return Ok(divValue);
+            }
+            return BadRequest("Invalid Input Values");
+		}
+
 		private decimal ConvertToDecimal(string strNumber)
         {
             decimal decimalValue;
