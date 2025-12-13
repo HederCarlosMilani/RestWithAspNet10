@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using RestWithAspNet10Scaffold.Service;
 
 namespace RestWithAspNet10Scaffold.Controllers
 {
@@ -9,106 +10,100 @@ namespace RestWithAspNet10Scaffold.Controllers
     public class MathController : ControllerBase
     {
 
-        [HttpGet("sum/{firstNumber}/{secondNumber}")]
+        private readonly MathService _mathService;
+
+        public MathController(MathService mathService)
+        {
+            this._mathService = mathService;
+		}
+
+		[HttpGet("sum/{firstNumber}/{secondNumber}")]
         public IActionResult GetSum(string firstNumber, string secondNumber) 
         {
-            if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
+            try
             {
-                var sum = ConvertToDecimal(firstNumber) + ConvertToDecimal(secondNumber);
-
+                var sum = _mathService.Sum(firstNumber, secondNumber);
                 return Ok(sum);
             }
-            return BadRequest("Invalid input");
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 		[HttpGet("sub/{firstNumber}/{secondNumber}")]
 		public IActionResult GetSub(string firstNumber, string secondNumber)
 		{
-			if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
-			{
-				decimal subValue = ConvertToDecimal(firstNumber) - ConvertToDecimal(secondNumber);
-				return Ok(subValue);
-			}
-			return BadRequest("Invalid Input Values");
+            try
+            {
+                var sub = _mathService.Sub(firstNumber, secondNumber);
+                return Ok(sub);
+
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 		}
 
-        [HttpGet("mult/{firstNumber}/{secondValue}")]
-        public IActionResult GetMult(string firstNumber, string secondValue)
+        [HttpGet("mult/{firstNumber}/{secondNumber}")]
+        public IActionResult GetMult(string firstNumber, string secondNumber)
         {
-            if (IsNumeric(firstNumber) && IsNumeric(secondValue))
+            try
             {
-                decimal multValue = ConvertToDecimal(firstNumber) * ConvertToDecimal(secondValue);
-                return Ok(multValue);
+                var mult = _mathService.Mult(firstNumber, secondNumber);
+                return Ok(mult);
+
             }
-            return BadRequest("Invalid Input Values");
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("div/{firstNumber}/{secondValue}")]
         public IActionResult GetDiv(string firstNumber, string secondValue)
         {
-            if (IsNumeric(firstNumber) && IsNumeric(secondValue))
+            try
             {
-                decimal divisor = ConvertToDecimal(secondValue);
-                if (divisor == 0)
-                {
-                    return BadRequest("Division by zero is not allowed.");
-                }
-                decimal divValue = ConvertToDecimal(firstNumber) / divisor;
-                return Ok(divValue);
-            }
-            return BadRequest("Invalid Input Values");
+                decimal div = _mathService.Div(firstNumber, secondValue);
+                return Ok(div);
+			}
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+			}
 		}
 
         [HttpGet("mean/{firstNumber}/{secondValue}")]
             public IActionResult GetMean(string firstNumber, string secondValue)
         {
-            if (IsNumeric(firstNumber) && IsNumeric(secondValue))
+            try
             {
-                decimal meanValue = (ConvertToDecimal(firstNumber) + ConvertToDecimal(secondValue)) / 2;
-                return Ok(meanValue);
+                decimal mean = _mathService.Mean(firstNumber, secondValue);
+                return Ok(mean);
+
             }
-            return BadRequest("Invalid Input Values");
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 		}
 
         [HttpGet("sqrt/{number}")]
         public IActionResult GetSqrt(string number)
         {
-            if (IsNumeric(number))
+            try
             {
-                double sqrtValue = System.Math.Sqrt((double)ConvertToDecimal(number));
-                return Ok(sqrtValue);
+                decimal sqrt = _mathService.Sqrt(number);
+                return Ok(sqrt);
+
             }
-            return BadRequest("Invalid Input Value");
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 		}
 
-		private decimal ConvertToDecimal(string strNumber)
-        {
-            decimal decimalValue;
-
-            if(decimal.TryParse(
-                strNumber,
-				System.Globalization.NumberStyles.Any,
-				System.Globalization.NumberFormatInfo.InvariantInfo,
-                out decimalValue
-                ))
-            {
-                return decimalValue;
-            }
-
-            return 0;
-        }
-
-        private bool IsNumeric(string strNumber)
-        {
-            decimal decimalValue;
-            bool isNumeric = decimal.TryParse(
-                strNumber, 
-                System.Globalization.NumberStyles.Any,
-                System.Globalization.NumberFormatInfo.InvariantInfo,
-                out decimalValue
-                );
-
-            return isNumeric;
-        }
     }
 }
