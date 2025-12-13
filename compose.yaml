@@ -26,5 +26,9 @@
         - MSSQL_PID=Express
       ports:
         - "1433:1433"
+      volumes:
+        - sqlserver-data:/var/opt/mssql
       restart: unless-stopped
 
+volumes:
+    sqlserver-data:

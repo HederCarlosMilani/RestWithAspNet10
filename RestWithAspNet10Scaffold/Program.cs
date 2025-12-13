@@ -9,7 +9,6 @@ builder.AddServiceDefaults();
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<MathService>();
 builder.Services.AddScoped<IPersonServices, PersonServiceImpl>();
 
 var app = builder.Build();
