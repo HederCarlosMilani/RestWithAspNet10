@@ -1,0 +1,30 @@
+﻿services:
+#  restwithaspnet10.apphost:
+#    image: restwithaspnet10.apphost
+#    build:
+#      context: .
+#      dockerfile: RestWithAspNet10.AppHost/Dockerfile
+#
+#  restwithaspnet10.servicedefaults:
+#    image: restwithaspnet10.servicedefaults
+#    build:
+#      context: .
+#      dockerfile: RestWithAspNet10.ServiceDefaults/Dockerfile
+#
+#  restwithaspnet10scaffold:
+#    image: restwithaspnet10scaffold
+#    build:
+#      context: .
+#      dockerfile: RestWithAspNet10Scaffold/Dockerfile
+
+    sqlserver:
+      image: mcr.microsoft.com/mssql/server:2022-latest
+      container_name: SqlServer
+      environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=SuaSenhaForte123
+        - MSSQL_PID=Express
+      ports:
+        - "1433:1433"
+      restart: unless-stopped
+
