@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="RestWithAspNet10.AppHost/RestWithAspNet10.AppHost.csproj" />
+  <Project Path="RestWithAspNet10.ServiceDefaults/RestWithAspNet10.ServiceDefaults.csproj" />
+  <Project Path="RestWithAspNet10Scaffold/RestWithAspNet10Scaffold.csproj" />
+</Solution>
