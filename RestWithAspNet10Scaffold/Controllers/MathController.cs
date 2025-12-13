@@ -59,6 +59,28 @@ namespace RestWithAspNet10Scaffold.Controllers
             return BadRequest("Invalid Input Values");
 		}
 
+        [HttpGet("mean/{firstNumber}/{secondValue}")]
+            public IActionResult GetMean(string firstNumber, string secondValue)
+        {
+            if (IsNumeric(firstNumber) && IsNumeric(secondValue))
+            {
+                decimal meanValue = (ConvertToDecimal(firstNumber) + ConvertToDecimal(secondValue)) / 2;
+                return Ok(meanValue);
+            }
+            return BadRequest("Invalid Input Values");
+		}
+
+        [HttpGet("sqrt/{number}")]
+        public IActionResult GetSqrt(string number)
+        {
+            if (IsNumeric(number))
+            {
+                double sqrtValue = System.Math.Sqrt((double)ConvertToDecimal(number));
+                return Ok(sqrtValue);
+            }
+            return BadRequest("Invalid Input Value");
+		}
+
 		private decimal ConvertToDecimal(string strNumber)
         {
             decimal decimalValue;
