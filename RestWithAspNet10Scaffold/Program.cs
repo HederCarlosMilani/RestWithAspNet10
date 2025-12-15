@@ -5,6 +5,7 @@ using RestWithAspNet10Scaffold.Service.Impl;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.AddSeriLogLogging();
 
 // Add services to the container.
 
