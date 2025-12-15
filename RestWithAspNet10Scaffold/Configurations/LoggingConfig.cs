@@ -9,8 +9,8 @@ public static class LoggingConfig
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
             .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.Debug()
+            //.WriteTo.Console()
+            //.WriteTo.Debug()
             .CreateLogger();
         
         builder.Host.UseSerilog();
