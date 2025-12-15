@@ -1,51 +1,48 @@
-﻿using RestWithAspNet10Scaffold.Model;
+﻿using RestWithAspNet10Scaffold.Context;
+using RestWithAspNet10Scaffold.Model;
 
 namespace RestWithAspNet10Scaffold.Service.Impl;
 
 public class PersonServiceImpl : IPersonServices
 {
+    private MSSQLContext _mssqlContext;
+    public PersonServiceImpl(MSSQLContext mssqlContext)
+    {
+        _mssqlContext = mssqlContext;
+    }
+    
     public Person Create(Person person)
     {
-        person.Id = new Random().Next(1, 10000);
+        _mssqlContext.Persons.Add(person);
+        _mssqlContext.SaveChanges();
         return person;
     }
 
-    public Person FindById(long id)
+    public Person? FindById(long id)
     {
-        var person = MockPerson(id);
-        return person;
-    }
-
-    private Person MockPerson(long id)
-    {
-        return new Person
-        {
-            Id = id,
-            FirstName = "John",
-            LastName = "Doe",
-            Address = "123 Main St, Anytown, USA",
-            Gender = "Male",
-        };
+        return _mssqlContext.Persons.Find(id);
     }
 
     public List<Person> FindAll()
     {
-        var persons = new List<Person>();
-        for (long i = 1; i <= 8; i++)
-        {
-            persons.Add(MockPerson( new Random().Next(1, 10000)));
-        }
+        var persons = _mssqlContext.Persons.ToList();
         return persons;
     }
 
-    public Person Update(Person person)
+    public Person? Update(Person person)
     {
-        person.Id = new Random().Next(1, 10000);
+        var existingPerson = _mssqlContext.Persons.Find(person.Id);
+        if (existingPerson == null) return null;
+        _mssqlContext.Entry(existingPerson).CurrentValues.SetValues(person);
+        _mssqlContext.SaveChanges();
         return person;
     }
 
     public void Delete(long id)
     {
-        // Not implemented
+        var person = _mssqlContext.Persons.Find(id);
+        if (person == null) return;
+        _mssqlContext.Persons.Remove(person);
+        _mssqlContext.SaveChanges();
     }
 }
