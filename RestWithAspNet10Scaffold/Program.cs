@@ -1,3 +1,4 @@
+using RestWithAspNet10Scaffold.Configurations;
 using RestWithAspNet10Scaffold.Service;
 using RestWithAspNet10Scaffold.Service.Impl;
 
@@ -8,6 +9,8 @@ builder.AddServiceDefaults();
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDatabaseConfig(builder.Configuration);
 
 builder.Services.AddScoped<IPersonServices, PersonServiceImpl>();
 
