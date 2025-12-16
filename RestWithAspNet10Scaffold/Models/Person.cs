@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RestWithAspNet10Scaffold.Model;
+namespace RestWithAspNet10Scaffold.Models;
 
 [Table("person")]
 public class Person

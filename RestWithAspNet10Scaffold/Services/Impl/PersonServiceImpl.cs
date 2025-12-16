@@ -1,48 +1,42 @@
-﻿using RestWithAspNet10Scaffold.Context;
-using RestWithAspNet10Scaffold.Model;
+﻿using RestWithAspNet10Scaffold.Contexts;
+using RestWithAspNet10Scaffold.Models;
+using RestWithAspNet10Scaffold.Repositories;
 
-namespace RestWithAspNet10Scaffold.Service.Impl;
+namespace RestWithAspNet10Scaffold.Services.Impl;
 
 public class PersonServiceImpl : IPersonServices
 {
-    private MSSQLContext _mssqlContext;
-    public PersonServiceImpl(MSSQLContext mssqlContext)
+    private readonly IPersonRepository _personRepository;
+    
+    public PersonServiceImpl(IPersonRepository personRepository)
     {
-        _mssqlContext = mssqlContext;
+        _personRepository = personRepository;
     }
     
     public Person Create(Person person)
     {
-        _mssqlContext.Persons.Add(person);
-        _mssqlContext.SaveChanges();
-        return person;
+        return  _personRepository.Create(person);
     }
 
     public Person? FindById(long id)
     {
-        return _mssqlContext.Persons.Find(id);
+        return _personRepository.FindById(id);
     }
 
     public List<Person> FindAll()
     {
-        var persons = _mssqlContext.Persons.ToList();
-        return persons;
+        return _personRepository.GetAll();
     }
 
     public Person? Update(Person person)
     {
-        var existingPerson = _mssqlContext.Persons.Find(person.Id);
-        if (existingPerson == null) return null;
-        _mssqlContext.Entry(existingPerson).CurrentValues.SetValues(person);
-        _mssqlContext.SaveChanges();
-        return person;
+        return  _personRepository.Update(person);
     }
 
     public void Delete(long id)
     {
-        var person = _mssqlContext.Persons.Find(id);
+        var person = _personRepository.FindById(id);
         if (person == null) return;
-        _mssqlContext.Persons.Remove(person);
-        _mssqlContext.SaveChanges();
+        _personRepository.Delete(person.Id);
     }
 }

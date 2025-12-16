@@ -12,7 +12,7 @@ public static class DatabaseConfig
             throw new InvalidOperationException("Connection string 'MSSQLServerConnectionString' not found.");
         }
         
-        services.AddDbContext<Context.MSSQLContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<Contexts.MSSQLContext>(options => options.UseSqlServer(connectionString));
         return services;
     }
 }

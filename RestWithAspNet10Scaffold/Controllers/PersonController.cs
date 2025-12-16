@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestWithAspNet10Scaffold.Service;
+using RestWithAspNet10Scaffold.Services;
 
 namespace RestWithAspNet10Scaffold.Controllers;
 
@@ -31,14 +31,14 @@ public class PersonController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Model.Person person)
+    public IActionResult Post([FromBody] Models.Person person)
     {
         _logger.LogInformation($"Adding new person {person.FirstName} {person.LastName}");
         return Ok(_personServices.Create(person));
     }
 
     [HttpPut]
-    public IActionResult Put([FromBody] Model.Person person)
+    public IActionResult Put([FromBody] Models.Person person)
     {
         _logger.LogInformation($"Updating person with id {person.Id}");
         return Ok(_personServices.Update(person));
