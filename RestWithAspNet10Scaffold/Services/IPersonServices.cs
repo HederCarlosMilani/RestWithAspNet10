@@ -1,6 +1,6 @@
-﻿using RestWithAspNet10Scaffold.Model;
+﻿using RestWithAspNet10Scaffold.Models;
 
-namespace RestWithAspNet10Scaffold.Service;
+namespace RestWithAspNet10Scaffold.Services;
 
 public interface IPersonServices
 {

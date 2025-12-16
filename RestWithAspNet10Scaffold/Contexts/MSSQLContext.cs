@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RestWithAspNet10Scaffold.Model;
+using RestWithAspNet10Scaffold.Models;
 
-namespace RestWithAspNet10Scaffold.Context;
+namespace RestWithAspNet10Scaffold.Contexts;
 
 public class MSSQLContext : DbContext
 {

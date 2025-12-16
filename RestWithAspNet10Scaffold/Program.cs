@@ -1,6 +1,8 @@
 using RestWithAspNet10Scaffold.Configurations;
-using RestWithAspNet10Scaffold.Service;
-using RestWithAspNet10Scaffold.Service.Impl;
+using RestWithAspNet10Scaffold.Repositories;
+using RestWithAspNet10Scaffold.Repositories.Impl;
+using RestWithAspNet10Scaffold.Services;
+using RestWithAspNet10Scaffold.Services.Impl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddDatabaseConfig(builder.Configuration);
 
-builder.Services.AddScoped<IPersonServices, PersonServiceImpl>();
+builder.Services.AddScoped<IPersonServices, PersonService>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 var app = builder.Build();
 
