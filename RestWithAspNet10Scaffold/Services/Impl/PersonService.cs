@@ -4,11 +4,11 @@ using RestWithAspNet10Scaffold.Repositories;
 
 namespace RestWithAspNet10Scaffold.Services.Impl;
 
-public class PersonServiceImpl : IPersonServices
+public class PersonService : IPersonServices
 {
     private readonly IPersonRepository _personRepository;
     
-    public PersonServiceImpl(IPersonRepository personRepository)
+    public PersonService(IPersonRepository personRepository)
     {
         _personRepository = personRepository;
     }

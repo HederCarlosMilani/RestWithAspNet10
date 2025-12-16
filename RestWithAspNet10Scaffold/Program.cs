@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDatabaseConfig(builder.Configuration);
 
-builder.Services.AddScoped<IPersonServices, PersonServiceImpl>();
+builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 var app = builder.Build();
