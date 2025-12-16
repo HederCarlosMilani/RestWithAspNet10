@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="db\dataset\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 
