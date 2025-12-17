@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RestWithAspNet10Scaffold.Models.Base;
 
 namespace RestWithAspNet10Scaffold.Models;
 
 [Table("Books")]
-public class Book
+public class Book : BaseEntity
 {
-    [Key]
-    [Column("id")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long Id { get; set; }
-    
     [Required(ErrorMessage = "Title is required")]
     [Column("title", TypeName = "varchar(MAX)")]
     [MaxLength]
