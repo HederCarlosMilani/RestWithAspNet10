@@ -6,9 +6,9 @@ namespace RestWithAspNet10Scaffold.Services.Impl;
 
 public class PersonService : IPersonServices
 {
-    private readonly IPersonRepository _personRepository;
+    private readonly IRepository<Person> _personRepository;
     
-    public PersonService(IPersonRepository personRepository)
+    public PersonService(IRepository<Person> personRepository)
     {
         _personRepository = personRepository;
     }
@@ -25,7 +25,7 @@ public class PersonService : IPersonServices
 
     public List<Person> FindAll()
     {
-        return _personRepository.GetAll();
+        return _personRepository.FindAll();
     }
 
     public Person? Update(Person person)
@@ -37,6 +37,6 @@ public class PersonService : IPersonServices
     {
         var person = _personRepository.FindById(id);
         if (person == null) return;
-        _personRepository.Delete(person.Id);
+        _personRepository.Delete(person);
     }
 }
