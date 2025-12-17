@@ -1,4 +1,5 @@
-﻿using RestWithAspNet10Scaffold.Contexts;
+﻿using RestWithAspNet10Scaffold.Data.Convert.Impl;
+using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Models;
 using RestWithAspNet10Scaffold.Repositories;
 
@@ -6,31 +7,35 @@ namespace RestWithAspNet10Scaffold.Services.Impl;
 
 public class PersonService : IPersonServices
 {
-    private readonly IRepository<Person> _personRepository;
+    private IRepository<Person> _personRepository;
+    private readonly PersonConverter _personConverter;
     
     public PersonService(IRepository<Person> personRepository)
     {
         _personRepository = personRepository;
+        _personConverter = new PersonConverter();
     }
     
-    public Person Create(Person person)
+    public PersonDto Create(PersonDto personDto)
     {
-        return  _personRepository.Create(person);
+        Person person = _personConverter.Parser(personDto);
+        return  _personConverter.Parser(_personRepository.Create(person));
     }
 
-    public Person? FindById(long id)
+    public PersonDto? FindById(long id)
     {
-        return _personRepository.FindById(id);
+        return _personConverter.Parser(_personRepository.FindById(id));
     }
 
-    public List<Person> FindAll()
+    public List<PersonDto> FindAll()
     {
-        return _personRepository.FindAll();
+        return _personConverter.ParserList(_personRepository.FindAll());
     }
 
-    public Person? Update(Person person)
+    public PersonDto? Update(PersonDto personDto)
     {
-        return  _personRepository.Update(person);
+        Person person = _personConverter.Parser(personDto);
+        return  _personConverter.Parser(_personRepository.Update(person));
     }
 
     public void Delete(long id)

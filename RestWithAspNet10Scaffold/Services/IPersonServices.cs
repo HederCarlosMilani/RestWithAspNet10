@@ -1,12 +1,12 @@
-﻿using RestWithAspNet10Scaffold.Models;
+﻿using RestWithAspNet10Scaffold.Data.Dto;
 
 namespace RestWithAspNet10Scaffold.Services;
 
 public interface IPersonServices
 {
-    Person Create(Person person);
-    Person? FindById(long id);
-    List<Person> FindAll();
-    Person? Update(Person person);
+    PersonDto Create(PersonDto person);
+    PersonDto? FindById(long id);
+    List<PersonDto> FindAll();
+    PersonDto? Update(PersonDto person);
     void Delete(long id);
 }
