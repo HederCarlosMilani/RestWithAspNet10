@@ -1,5 +1,6 @@
 ﻿using RestWithAspNet10Scaffold.Data.Convert.Impl;
 using RestWithAspNet10Scaffold.Data.Dto;
+using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Models;
 using RestWithAspNet10Scaffold.Repositories;
 

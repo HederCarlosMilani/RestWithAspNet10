@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet10Scaffold.Data.Dto;
+using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Services;
 
 namespace RestWithAspNet10Scaffold.Controllers;

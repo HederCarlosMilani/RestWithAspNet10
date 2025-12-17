@@ -1,4 +1,4 @@
-﻿namespace RestWithAspNet10Scaffold.Data.Dto;
+﻿namespace RestWithAspNet10Scaffold.Data.Dto.V1;
 
 public class BookDto
 {

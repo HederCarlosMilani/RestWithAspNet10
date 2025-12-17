@@ -1,4 +1,5 @@
 ﻿using RestWithAspNet10Scaffold.Data.Dto;
+using RestWithAspNet10Scaffold.Data.Dto.V1;
 
 namespace RestWithAspNet10Scaffold.Services;
 
