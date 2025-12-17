@@ -23,7 +23,7 @@ public class BookController : Controller
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    public IActionResult Get(long id)
     {
         Book? book = _bookService.FindById(id);
         return book == null ? NotFound() : Ok(book);
@@ -36,5 +36,19 @@ public class BookController : Controller
         return createdBook == null
             ? BadRequest("Problema na criação do usuário")
             : CreatedAtAction(nameof(Get), new { id = createdBook.Id }, createdBook);
+    }
+
+    [HttpPut]
+    public IActionResult Put([FromBody] Book book)
+    {
+        Book? updatedBook = _bookService.Update(book);
+        return updatedBook == null ? NotFound() : Ok(updatedBook);
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(long id)
+    {
+        Book? book = _bookService.Delete(id);
+        return book == null ? NotFound() : NoContent();
     }
 }

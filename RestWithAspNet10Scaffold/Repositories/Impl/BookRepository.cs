@@ -17,7 +17,7 @@ public class BookRepository : IBookRepository
         return _mssqlContext.Books.ToList();
     }
     
-    public Book? FindById(int id)
+    public Book? FindById(long id)
     {
         return _mssqlContext.Books.FirstOrDefault(b => b.Id == id);
     }
@@ -27,5 +27,23 @@ public class BookRepository : IBookRepository
         _mssqlContext.Books.Add(book);
         _mssqlContext.SaveChanges();
         return book;
+    }
+    
+    public Book Update(Book existingBook)
+    {
+        var book = _mssqlContext.Books.FirstOrDefault(b => b.Id == existingBook.Id);
+        if (book == null) return null;
+
+        book.Title = existingBook.Title;
+        book.Author = existingBook.Author;
+        book.Price = existingBook.Price;
+        _mssqlContext.SaveChanges();
+        return book;
+    }
+
+    public void Delete(Book book)
+    {
+        _mssqlContext.Books.Remove(book);
+        _mssqlContext.SaveChanges();
     }
 }

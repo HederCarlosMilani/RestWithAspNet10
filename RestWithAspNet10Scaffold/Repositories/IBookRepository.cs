@@ -5,6 +5,8 @@ namespace RestWithAspNet10Scaffold.Repositories;
 public interface IBookRepository
 {
      List<Book> FindAll();
-     Book? FindById(int id);
+     Book? FindById(long id);
      Book Create(Book book);
+     Book Update(Book existingBook);
+     void Delete(Book book);
 }
