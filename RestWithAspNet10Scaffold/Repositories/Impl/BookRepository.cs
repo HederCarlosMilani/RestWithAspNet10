@@ -16,4 +16,16 @@ public class BookRepository : IBookRepository
     {
         return _mssqlContext.Books.ToList();
     }
+    
+    public Book? FindById(int id)
+    {
+        return _mssqlContext.Books.FirstOrDefault(b => b.Id == id);
+    }
+    
+    public Book Create(Book book)
+    {
+        _mssqlContext.Books.Add(book);
+        _mssqlContext.SaveChanges();
+        return book;
+    }
 }

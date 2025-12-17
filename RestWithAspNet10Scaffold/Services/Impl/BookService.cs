@@ -19,4 +19,26 @@ public class BookService : IBookService
         _logger.LogInformation("Find All Books");
         return _bookRepository.FindAll();
     }
+
+    public Book? FindById(int id)
+    {
+        _logger.LogInformation("Find Book By Id: {Id}", id);
+        return _bookRepository.FindById(id);
+    }
+    
+    public Book? Create(Book book)
+    {
+        _logger.LogInformation("Create Book: {Book}", book);
+
+        try
+        {
+            Book createdBook = _bookRepository.Create(book);
+            return createdBook;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating book: {Book}", book);
+            return null;
+        }
+    }
 }

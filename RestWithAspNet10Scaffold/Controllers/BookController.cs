@@ -21,4 +21,20 @@ public class BookController : Controller
         List<Book> books = _bookService.FindAll();
         return books.Count == 0 ? NotFound() : Ok(books);
     }
+
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
+    {
+        Book? book = _bookService.FindById(id);
+        return book == null ? NotFound() : Ok(book);
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody] Book book)
+    {
+        Book? createdBook = _bookService.Create(book);
+        return createdBook == null
+            ? BadRequest("Problema na criação do usuário")
+            : CreatedAtAction(nameof(Get), new { id = createdBook.Id }, createdBook);
+    }
 }
