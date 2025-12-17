@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestWithAspNet10Scaffold.Models;
 using RestWithAspNet10Scaffold.Services;
 
 namespace RestWithAspNet10Scaffold.Controllers;
@@ -12,5 +13,12 @@ public class BookController : Controller
     public BookController(IBookService bookService)
     {
         _bookService = bookService;
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        List<Book> books = _bookService.FindAll();
+        return books.Count == 0 ? NotFound() : Ok(books);
     }
 }
