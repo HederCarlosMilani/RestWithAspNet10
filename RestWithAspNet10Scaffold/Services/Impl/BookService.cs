@@ -1,4 +1,6 @@
-﻿using RestWithAspNet10Scaffold.Models;
+﻿using Mapster;
+using RestWithAspNet10Scaffold.Data.Dto;
+using RestWithAspNet10Scaffold.Models;
 using RestWithAspNet10Scaffold.Repositories;
 
 namespace RestWithAspNet10Scaffold.Services.Impl;
@@ -14,26 +16,26 @@ public class BookService : IBookService
         _logger = logger;
     }
     
-    public List<Book> FindAll()
+    public List<BookDto> FindAll()
     {
         _logger.LogInformation("Find All Books");
-        return _bookRepository.FindAll();
+        return _bookRepository.FindAll().Adapt<List<BookDto>>();
     }
 
-    public Book? FindById(long id)
+    public BookDto? FindById(long id)
     {
         _logger.LogInformation("Find Book By Id: {Id}", id);
-        return _bookRepository.FindById(id);
+        return _bookRepository.FindById(id).Adapt<BookDto>();
     }
     
-    public Book? Create(Book book)
+    public BookDto? Create(BookDto book)
     {
         _logger.LogInformation("Create Book: {Book}", book);
 
         try
         {
-            Book createdBook = _bookRepository.Create(book);
-            return createdBook;
+            Book createdBook = _bookRepository.Create(book.Adapt<Book>());
+            return createdBook.Adapt<BookDto>();
         }
         catch (Exception ex)
         {
@@ -42,13 +44,13 @@ public class BookService : IBookService
         }
     }
     
-    public Book? Update(Book book)
+    public BookDto? Update(BookDto book)
     {
         _logger.LogInformation("Update Book: {Book}", book);
         try
         {
-            Book updatedBook = _bookRepository.Update(book);
-            return updatedBook;
+            Book updatedBook = _bookRepository.Update(book.Adapt<Book>());
+            return updatedBook.Adapt<BookDto>();
         }
         catch (Exception ex)
         {
@@ -57,7 +59,7 @@ public class BookService : IBookService
         }
     }
     
-    public Book? Delete(long id)
+    public BookDto? Delete(long id)
     {
         _logger.LogInformation("Delete Book By Id: {Id}", id);
         Book? existingBook = _bookRepository.FindById(id);
@@ -70,7 +72,7 @@ public class BookService : IBookService
         try
         {
             _bookRepository.Delete(existingBook);
-            return existingBook;
+            return existingBook.Adapt<BookDto>();
         }
         catch (Exception ex)
         {
