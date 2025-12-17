@@ -14,9 +14,13 @@ builder.AddSeriLogLogging();
 builder.Services.AddControllers();
 
 builder.Services.AddDatabaseConfig(builder.Configuration);
+builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
 
 builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 
 var app = builder.Build();
 
