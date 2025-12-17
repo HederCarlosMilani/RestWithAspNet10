@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RestWithAspNet10Scaffold.Models.Base;
 
 namespace RestWithAspNet10Scaffold.Models;
 
 [Table("person")]
-public class Person
+public class Person : BaseEntity
 {
-    [Key]
-    [Column("id")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long Id { get; set; }
-    
     [Required(ErrorMessage = "First Name is required")]
     [Column("first_name", TypeName = "varchar(80)")]
     [MaxLength(80)]
