@@ -5,10 +5,10 @@ namespace RestWithAspNet10Scaffold.Services.Impl;
 
 public class BookService : IBookService
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IRepository<Book> _bookRepository;
     private readonly ILogger<BookService> _logger;
     
-    public BookService(IBookRepository bookRepository, ILogger<BookService> logger)
+    public BookService(IRepository<Book> bookRepository, ILogger<BookService> logger)
     {
         _bookRepository = bookRepository;
         _logger = logger;
