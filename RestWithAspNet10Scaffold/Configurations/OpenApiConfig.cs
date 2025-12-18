@@ -5,7 +5,6 @@ namespace RestWithAspNet10Scaffold.Configurations;
 public static class OpenApiConfig
 {
     private static readonly string AppName = "RestWithAspNet10Scaffold";
-
     private static readonly string AppDescription =
         "A simple API built with ASP.NET Core 10 demonstrating RESTful principles and best practices.";
 
