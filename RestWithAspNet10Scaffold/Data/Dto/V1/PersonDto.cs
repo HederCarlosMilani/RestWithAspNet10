@@ -1,4 +1,7 @@
-﻿namespace RestWithAspNet10Scaffold.Data.Dto.V1;
+﻿using System.Text.Json.Serialization;
+using RestWithAspNet10Scaffold.JsonSerializers;
+
+namespace RestWithAspNet10Scaffold.Data.Dto.V1;
 
 public class PersonDto
 {
