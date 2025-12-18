@@ -13,6 +13,11 @@ builder.AddSeriLogLogging();
 
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApiConfig();
+builder.Services.AddSwaggerConfig();
+builder.Services.AddRoutesConfig();
+
 builder.Services.AddDatabaseConfig(builder.Configuration);
 builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
 
@@ -30,5 +35,8 @@ app.MapDefaultEndpoints();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseSwaggerSpecification();
+app.UseScalarSpecification();
 
 app.Run();
