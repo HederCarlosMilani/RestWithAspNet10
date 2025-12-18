@@ -13,6 +13,9 @@ builder.AddSeriLogLogging();
 
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApiConfig();
+
 builder.Services.AddDatabaseConfig(builder.Configuration);
 builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
 
