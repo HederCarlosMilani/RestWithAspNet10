@@ -19,6 +19,10 @@ public class PersonController : Controller
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(200, Type = typeof(PersonDto))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult Get(long id)
     {
         _logger.LogInformation($"Getting person with id {id}");
@@ -26,6 +30,10 @@ public class PersonController : Controller
     }
 
     [HttpGet]
+    [ProducesResponseType(200, Type = typeof(List<PersonDto>))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult Get()
     {
         _logger.LogInformation($"Getting all persons");
@@ -33,6 +41,10 @@ public class PersonController : Controller
     }
 
     [HttpPost]
+    [ProducesResponseType(201, Type = typeof(PersonDto))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult Post([FromBody] PersonDto person)
     {
         _logger.LogInformation($"Adding new person {person.FirstName} {person.LastName}");
@@ -40,6 +52,10 @@ public class PersonController : Controller
     }
 
     [HttpPut]
+    [ProducesResponseType(200, Type = typeof(PersonDto))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult Put([FromBody] PersonDto person)
     {
         _logger.LogInformation($"Updating person with id {person.Id}");
@@ -47,6 +63,10 @@ public class PersonController : Controller
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult Delete(long id)
     {
         _logger.LogInformation($"Deleting person with id {id}");
