@@ -19,18 +19,7 @@ public static class EvolveConfig
 
             try
             {
-                using var evolveConnection = new SqlConnection(connectionString);
-
-                var evolve = new Evolve(
-                    evolveConnection,
-                    msg => Log.Information(msg)
-                )
-                {
-                    Locations = new List<string> { "db/migrations", "db/dataset" },
-                    IsEraseDisabled = true
-                };
-                
-                evolve.Migrate();
+                ExecuteMigrations(connectionString);
             }
             catch (Exception e)
             {
@@ -39,5 +28,21 @@ public static class EvolveConfig
             }
         }
         return services;
+    }
+
+    public static void ExecuteMigrations(string connectionString)
+    {
+        using var evolveConnection = new SqlConnection(connectionString);
+
+        var evolve = new Evolve(
+            evolveConnection,
+            msg => Log.Information(msg)
+        )
+        {
+            Locations = new List<string> { "db/migrations", "db/dataset" },
+            IsEraseDisabled = true
+        };
+                
+        evolve.Migrate();
     }
 }
