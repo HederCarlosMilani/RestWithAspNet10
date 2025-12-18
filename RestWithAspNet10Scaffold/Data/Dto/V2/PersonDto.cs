@@ -1,4 +1,7 @@
-﻿namespace RestWithAspNet10Scaffold.Data.Dto.V2;
+﻿using System.Text.Json.Serialization;
+using RestWithAspNet10Scaffold.JsonSerializers;
+
+namespace RestWithAspNet10Scaffold.Data.Dto.V2;
 
 public class PersonDto
 {
@@ -7,5 +10,7 @@ public class PersonDto
     public string LastName { get; set; }
     public string Address { get; set; }
     public string Gender {get; set;}
+    
+    [JsonConverter(typeof(DateSerializer))]
     public  DateTime? BirthDate { get; set; }
 }
