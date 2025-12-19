@@ -25,6 +25,11 @@
     <ItemGroup>
         <Using Include="Xunit"/>
     </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="..\RestWithAspNet10Scaffold\db\migrations\**\*.sql" Link="db\migrations\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Always"/>
+        <Content Include="..\RestWithAspNet10Scaffold\db\dataset\**\*.sql" Link="db\dataset\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Always"/>
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RestWithAspNet10Scaffold\RestWithAspNet10Scaffold.csproj" />
