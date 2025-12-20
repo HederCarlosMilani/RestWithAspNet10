@@ -17,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiConfig();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddRoutesConfig();
+builder.Services.AddCorsConfig(builder.Configuration);
 
 builder.Services.AddDatabaseConfig(builder.Configuration);
 builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
@@ -33,6 +34,8 @@ app.MapDefaultEndpoints();
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
+app.UseRouting();
+app.UseCorsConfig();
 
 app.MapControllers();
 
