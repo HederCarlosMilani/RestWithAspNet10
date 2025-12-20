@@ -12,6 +12,7 @@ public class SqlServerFixture : IAsyncLifetime
     {
         Container = new MsSqlBuilder()
             .WithPassword("SuaSenhaForte123")
+            .WithPortBinding(0, 1433)
             .Build();
     }
     
