@@ -11,4 +11,5 @@ public interface IPersonServices
     PersonDto? Update(PersonDto person);
     void Delete(long id);
     PersonDto? Disable(long id);
+    PersonDto? Enable(long id);
 }

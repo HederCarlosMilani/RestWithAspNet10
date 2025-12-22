@@ -52,4 +52,10 @@ public class PersonService : IPersonServices
         var person = _personRepository.Disable(id);
         return person.Adapt<PersonDto>();
     }
+    
+    public PersonDto? Enable(long id)
+    {
+        var person = _personRepository.Enable(id);
+        return person.Adapt<PersonDto>();
+    }
 }

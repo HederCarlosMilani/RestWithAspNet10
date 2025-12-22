@@ -92,4 +92,22 @@ public class PersonController : Controller
         _logger.LogDebug($"Disabling person with id {id}");
         return Ok(_personServices.Disable(id));
     }
+
+    [HttpPatch("enable/{id}")]
+    [ProducesResponseType(200, Type = typeof(PersonDto))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public IActionResult Enable(long id)
+    {
+        _logger.LogInformation($"Enabling person with id {id}");
+        if (_personServices.Enable(id) == null)
+        {
+            _logger.LogError($"Enabling person with id {id}");
+            return NotFound();
+        }
+
+        _logger.LogDebug($"Enabling person with id {id}");
+        return Ok(_personServices.Enable(id));
+    }
 }
