@@ -76,7 +76,7 @@ public class PersonController : Controller
         return NoContent();
     }
 
-    [HttpPatch("{id}")]
+    [HttpPatch("disable/{id}")]
     [ProducesResponseType(200, Type = typeof(PersonDto))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -86,10 +86,10 @@ public class PersonController : Controller
         _logger.LogInformation($"Disabling person with id {id}");
         if (_personServices.Disable(id) == null)
         {
-            _logger.LogError($"Disabling person with id {id}");
+            _logger.LogError($"Fail disabling person with id {id}");
             return NotFound();
         }
-        _logger.LogDebug($"Disabling person with id {id}");
+        _logger.LogDebug($"Success disabling person with id {id}");
         return Ok(_personServices.Disable(id));
     }
 
@@ -103,11 +103,11 @@ public class PersonController : Controller
         _logger.LogInformation($"Enabling person with id {id}");
         if (_personServices.Enable(id) == null)
         {
-            _logger.LogError($"Enabling person with id {id}");
+            _logger.LogError($"Fail enabling person with id {id}");
             return NotFound();
         }
 
-        _logger.LogDebug($"Enabling person with id {id}");
+        _logger.LogDebug($"Success enabling person with id {id}");
         return Ok(_personServices.Enable(id));
     }
 }
