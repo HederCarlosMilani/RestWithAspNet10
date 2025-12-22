@@ -101,6 +101,8 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
         var updatedPerson = await response.Content.ReadFromJsonAsync<PersonDto>();
         updatedPerson.Should().NotBeNull();
         updatedPerson!.LastName.Should().Be("UpdatedLastName");
+        
+        _person = updatedPerson; 
     }
     
     [Fact(DisplayName = "05 - Disable Person"), TestPriority(5)]
