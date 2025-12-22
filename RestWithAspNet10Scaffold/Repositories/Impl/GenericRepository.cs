@@ -6,7 +6,7 @@ namespace RestWithAspNet10Scaffold.Repositories.Impl;
 
 public class GenericRepository<T> : IRepository<T> where T : BaseEntity
 {
-    private MSSQLContext _mssqlContext;
+    protected MSSQLContext _mssqlContext;
     private DbSet<T> _dbSet;
     public GenericRepository(MSSQLContext mssqlContext)
     {
