@@ -26,4 +26,7 @@ public class Person : BaseEntity
     [Column("gender", TypeName = "varchar(6)")]
     [MaxLength(6)]
     public string Gender { get; set; }
+
+    [Column("enabled")]
+    public bool Enabled { get; set; }
 }
