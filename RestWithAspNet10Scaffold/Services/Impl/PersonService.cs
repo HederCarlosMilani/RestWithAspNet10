@@ -1,4 +1,5 @@
-﻿using RestWithAspNet10Scaffold.Data.Convert.Impl;
+﻿using Mapster;
+using RestWithAspNet10Scaffold.Data.Convert.Impl;
 using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Models;
@@ -8,10 +9,10 @@ namespace RestWithAspNet10Scaffold.Services.Impl;
 
 public class PersonService : IPersonServices
 {
-    private IRepository<Person> _personRepository;
+    private IPersonRepository _personRepository;
     private readonly PersonConverter _personConverter;
     
-    public PersonService(IRepository<Person> personRepository)
+    public PersonService(IPersonRepository personRepository)
     {
         _personRepository = personRepository;
         _personConverter = new PersonConverter();
@@ -44,5 +45,11 @@ public class PersonService : IPersonServices
         var person = _personRepository.FindById(id);
         if (person == null) return;
         _personRepository.Delete(person);
+    }
+    
+    public PersonDto? Disable(long id)
+    {
+        var person = _personRepository.Disable(id);
+        return person.Adapt<PersonDto>();
     }
 }

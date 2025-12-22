@@ -5,7 +5,7 @@ namespace RestWithAspNet10Scaffold.Repositories.Impl;
 
 public class PersonRepository(MSSQLContext mssqlContext) : GenericRepository<Person>(mssqlContext), IPersonRepository
 {
-    public Person? Disable(int id)
+    public Person? Disable(long id)
     {
         var person = _mssqlContext.Persons.Find(id);
         if (person == null) return null;
@@ -15,7 +15,7 @@ public class PersonRepository(MSSQLContext mssqlContext) : GenericRepository<Per
         return person;
     }
 
-    public Person? Enable(int id)
+    public Person? Enable(long id)
     {
         var person = _mssqlContext.Persons.Find(id);
         if (person == null) return null;

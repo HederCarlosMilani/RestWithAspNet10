@@ -75,4 +75,21 @@ public class PersonController : Controller
         _personServices.Delete(id);
         return NoContent();
     }
+
+    [HttpPatch("{id}")]
+    [ProducesResponseType(200, Type = typeof(PersonDto))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public IActionResult Disable(long id)
+    {
+        _logger.LogInformation($"Disabling person with id {id}");
+        if (_personServices.Disable(id) == null)
+        {
+            _logger.LogError($"Disabling person with id {id}");
+            return NotFound();
+        }
+        _logger.LogDebug($"Disabling person with id {id}");
+        return Ok(_personServices.Disable(id));
+    }
 }
