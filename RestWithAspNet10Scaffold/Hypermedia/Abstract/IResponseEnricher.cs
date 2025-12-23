@@ -4,6 +4,6 @@ namespace RestWithAspNet10Scaffold.Hypermedia.Abstract;
 
 public interface IResponseEnricher
 {
-    bool CanEnrich(ResultExecutedContext context);
-    Task EnrichAsync(ResultExecutedContext context);
+    bool CanEnrich(ResultExecutingContext context);
+    Task EnrichAsync(ResultExecutingContext context);
 }
