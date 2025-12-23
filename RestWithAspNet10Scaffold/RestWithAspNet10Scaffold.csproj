@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Hypermedia\Enricher\" />
+    <Folder Include="Hypermedia\Filters\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 
