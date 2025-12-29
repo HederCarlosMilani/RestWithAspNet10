@@ -24,4 +24,17 @@ public class PersonRepository(MSSQLContext mssqlContext) : GenericRepository<Per
         _mssqlContext.SaveChanges();
         return person;
     }
+
+    public List<Person> FindByName(string firstName, string lastName)
+    {
+        var query = _mssqlContext.Persons.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(firstName))
+            query = query.Where(p => p.FirstName.ToLower().Contains(firstName.ToLower()));
+        
+        if (!string.IsNullOrWhiteSpace(lastName))
+            query = query.Where(p => p.LastName.ToLower().Contains(lastName.ToLower()));
+        
+        //return query.ToList();
+        return [.. query];
+    }
 }
