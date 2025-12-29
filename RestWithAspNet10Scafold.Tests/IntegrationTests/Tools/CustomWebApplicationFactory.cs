@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using RestWithAspNet10Scaffold.Contexts;
 
 namespace RestWithAspNet10Scafold.Tests.IntegrationTests.Tools;
 
@@ -17,11 +21,33 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     {
         builder.ConfigureAppConfiguration((context, config) =>
         {
-            var dict = new Dictionary<string, string>
+            var testConfigPath = Path.Combine(
+                Path.GetDirectoryName(
+                        Assembly.GetExecutingAssembly().Location)!, 
+                "appsettings.Test.json");
+            
+            config.Sources.Clear();
+            config.AddJsonFile(
+                testConfigPath,
+                optional: false,
+                reloadOnChange: true
+                );
+        });
+
+        builder.ConfigureServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<MSSQLContext>));
+            
+            if (descriptor != null)
+                services.Remove(descriptor);
+
+            services.AddDbContext<MSSQLContext>(options =>
             {
-                { "MSSQLServerConnection:MSSQLServerConnectionString", _connectionString }
-            };
-            config.AddInMemoryCollection(dict!); 
+                options.UseSqlServer(_connectionString);
+            });
+            
         });
     }
 }
