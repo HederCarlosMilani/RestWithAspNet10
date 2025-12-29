@@ -110,4 +110,15 @@ public class PersonController : Controller
         _logger.LogDebug($"Success enabling person with id {id}");
         return Ok(_personServices.Enable(id));
     }
+
+    [HttpGet("find-by-name")]
+    [ProducesResponseType(200, Type = typeof(List<PersonDto>))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public IActionResult FindByName([FromQuery] string? firstName, [FromQuery] string? lastName)
+    {
+        _logger.LogInformation($"Finding persons by name: {firstName} {lastName}");
+        return Ok(_personServices.FindByName(firstName, lastName));
+    }
 }

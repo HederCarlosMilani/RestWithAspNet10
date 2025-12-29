@@ -25,7 +25,7 @@ public class PersonRepository(MSSQLContext mssqlContext) : GenericRepository<Per
         return person;
     }
 
-    public List<Person> FindByName(string firstName, string lastName)
+    public List<Person> FindByName(string? firstName, string? lastName)
     {
         var query = _mssqlContext.Persons.AsQueryable();
         if (!string.IsNullOrWhiteSpace(firstName))

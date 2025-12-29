@@ -12,4 +12,5 @@ public interface IPersonServices
     void Delete(long id);
     PersonDto? Disable(long id);
     PersonDto? Enable(long id);
+    List<PersonDto> FindByName(string? firstName, string? lastName);
 }

@@ -58,4 +58,10 @@ public class PersonService : IPersonServices
         var person = _personRepository.Enable(id);
         return person.Adapt<PersonDto>();
     }
+
+    public List<PersonDto> FindByName(string? firstName, string? lastName)
+    {
+        var persons = _personRepository.FindByName(firstName, lastName);
+        return _personConverter.ParserList(persons);
+    }
 }
