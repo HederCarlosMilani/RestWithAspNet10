@@ -32,4 +32,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="appsettings.Test.json" />
+  </ItemGroup>
+
 </Project>
