@@ -1,4 +1,5 @@
 using RestWithAspNet10Scaffold.Configurations;
+using RestWithAspNet10Scaffold.Hypermedia.Filters;
 using RestWithAspNet10Scaffold.Repositories;
 using RestWithAspNet10Scaffold.Repositories.Impl;
 using RestWithAspNet10Scaffold.Services;
@@ -11,13 +12,17 @@ builder.AddSeriLogLogging();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<HypermediaFilter>();
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiConfig();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddRoutesConfig();
 builder.Services.AddCorsConfig(builder.Configuration);
+builder.Services.AddHateoasConfiguration();
 
 builder.Services.AddDatabaseConfig(builder.Configuration);
 builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
@@ -42,5 +47,6 @@ app.MapControllers();
 
 app.UseSwaggerSpecification();
 app.UseScalarSpecification();
+app.UseHateoasRoutes();
 
 app.Run();
