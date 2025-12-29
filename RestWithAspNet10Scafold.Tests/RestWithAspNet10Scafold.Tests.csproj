@@ -29,6 +29,9 @@
     <ItemGroup>
         <Content Include="..\RestWithAspNet10Scaffold\db\migrations\**\*.sql" Link="db\migrations\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Always"/>
         <Content Include="..\RestWithAspNet10Scaffold\db\dataset\**\*.sql" Link="db\dataset\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Always"/>
+        <Content Update="appsettings.Test.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
