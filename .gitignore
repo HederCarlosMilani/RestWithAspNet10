@@ -366,4 +366,7 @@ FodyWeavers.xsd
 .idea/
 *.iml
 *.iws
-.DS_Store
+.DS_Store!/
+
+# Files uploaded to the application
+RestWithAspNet10Scaffold/Uploads/

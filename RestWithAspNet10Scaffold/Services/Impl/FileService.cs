@@ -57,8 +57,19 @@ public class FileService : IFileService
         return fileDetail;
     }
 
-    public Task<List<FileDetailDto>> SaveFilesToDisk(List<IFormFile> files)
+    public async Task<List<FileDetailDto>> SaveFilesToDisk(List<IFormFile> files)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Save Multiple Files To Disk");
+        
+        var results = new List<FileDetailDto>();
+        
+        foreach (var file in files)
+        {
+            var fileDetail = SaveFileToDisk(file).Result;
+            if (!string.IsNullOrEmpty(fileDetail.FileName))
+                results.Add(fileDetail);
+        }
+        
+        return results;
     }
 }

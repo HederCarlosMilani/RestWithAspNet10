@@ -20,4 +20,16 @@ public class FileController(IFileService fileService) : ControllerBase
         var fileDetail = await _fileService.SaveFileToDisk(fileUploadDto.File);
         return Ok(fileDetail);
     }
+
+    [HttpPost("uploadMultipleFile")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<FileDetailDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Produces("application/json")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> UploadFiles([FromForm] MultipleFilesUploadDto multipleFilesUploadDto)
+    {
+        var fileDetails = await _fileService.SaveFilesToDisk(multipleFilesUploadDto.Files);
+        return Ok(fileDetails);
+    }
 }
