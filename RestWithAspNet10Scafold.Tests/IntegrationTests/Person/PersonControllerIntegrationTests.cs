@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
+using RestWithAspNet10Scaffold.Hypermedia.Helpers;
 using RestWithAspNet10Scafold.Tests.IntegrationTests.Tools;
 using Xunit.Abstractions;
 
@@ -142,5 +143,26 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
         // Assert
         response.EnsureSuccessStatusCode();
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+    }
+
+    [Fact(DisplayName = "08 - Get Paged Persons"), TestPriority(8)]
+    public async Task TestGetPagedPersons()
+    {
+        // Act
+        int pageSize = 10;
+        int page = 1;
+        var response = await _client.GetAsync($"/person/asc/{pageSize}/{page}");
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+
+        var pagedResult = await response.Content.ReadFromJsonAsync<PagedSearchDto<PersonDto>>();
+
+        pagedResult.Should().NotBeNull();
+        pagedResult!.List.Should().NotBeNull();
+        pagedResult.List.Count.Should().BeGreaterThan(0);
+        pagedResult.List.Count.Should().Be(pageSize);
+
+        pagedResult.CurrentPage.Should().Be(page);
     }
 }

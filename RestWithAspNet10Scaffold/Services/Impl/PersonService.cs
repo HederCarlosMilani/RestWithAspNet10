@@ -2,6 +2,7 @@
 using RestWithAspNet10Scaffold.Data.Convert.Impl;
 using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
+using RestWithAspNet10Scaffold.Hypermedia.Helpers;
 using RestWithAspNet10Scaffold.Models;
 using RestWithAspNet10Scaffold.Repositories;
 
@@ -57,5 +58,18 @@ public class PersonService : IPersonServices
     {
         var person = _personRepository.Enable(id);
         return person.Adapt<PersonDto>();
+    }
+
+    public List<PersonDto> FindByName(string? firstName, string? lastName)
+    {
+        var persons = _personRepository.FindByName(firstName, lastName);
+        return _personConverter.ParserList(persons);
+    }
+
+    public PagedSearchDto<PersonDto> FindWithPagedSearch(string? name, string sortDirection, int pageSize, int page)
+    {
+        var pagedSearch = _personRepository.FindWithPagedSearch(name, sortDirection, pageSize, page);
+        
+        return pagedSearch.Adapt<PagedSearchDto<PersonDto>>();
     }
 }

@@ -51,4 +51,22 @@ public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     { 
         return _dbSet.Any(e => e.Id == id);
     }
+
+    public List<T> FindWithPagedSearch(string query)
+    {
+        // return _dbSet.FromSqlRaw(query).ToList();
+        return [.. _dbSet.FromSqlRaw(query)];
+    }
+
+    public int GetCount(string query)
+    {
+        using var connection = _mssqlContext.Database.GetDbConnection();
+        connection.Open();
+        
+        using var command = connection.CreateCommand();
+        command.CommandText = query;
+        
+        var result = command.ExecuteScalar();
+        return Convert.ToInt32(result);
+    }
 }
