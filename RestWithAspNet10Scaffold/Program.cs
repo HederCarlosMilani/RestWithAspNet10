@@ -24,11 +24,14 @@ builder.Services.AddRoutesConfig();
 builder.Services.AddCorsConfig(builder.Configuration);
 builder.Services.AddHateoasConfiguration();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddDatabaseConfig(builder.Configuration);
 builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
 
 builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();

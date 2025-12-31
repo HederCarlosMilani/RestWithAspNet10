@@ -27,9 +27,34 @@ public class FileService : IFileService
         throw new NotImplementedException();
     }
 
-    public Task<FileDetailDto> SaveFileToDisk(IFormFile file)
+    public async Task<FileDetailDto> SaveFileToDisk(IFormFile file)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("SaveFileToDisk");
+        
+        if (file == null || file.Length == 0)
+            throw new ArgumentException("File is null or empty");
+
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (!_allowedExtensions.Contains(extension))
+            throw new ArgumentException("File type is not allowed");
+        
+        var documentName = Path.GetFileName(file.FileName);
+        var destination = Path.Combine(_basePath, documentName);
+        
+        var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+        
+        var fileDetail = new FileDetailDto
+        {
+            FileName = documentName,
+            FileType = extension,
+            FileUrl = $"{baseUrl}/file/download/{documentName}"
+        };
+        
+        using var stream = new FileStream(destination, FileMode.Create);
+        
+        await file.CopyToAsync(stream);
+
+        return fileDetail;
     }
 
     public Task<List<FileDetailDto>> SaveFilesToDisk(List<IFormFile> files)
