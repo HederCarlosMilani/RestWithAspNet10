@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Runtime.Serialization;
+using FluentAssertions;
 using RestWithAspNet10Scaffold.Data.Convert.Impl;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Models;
@@ -49,7 +50,8 @@ public class PersonConverterTests
         Assert.Equal(personDto.Gender, person.Gender);
         person.Gender.Should().Be(personDto.Gender);
         
-        person.Should().BeEquivalentTo(personDto);
+        person.Should().BeEquivalentTo(personDto, options => options
+            .Excluding(ctx => ctx.Path.EndsWith("Links")));
     }
 
     [Fact]
@@ -139,7 +141,8 @@ public class PersonConverterTests
         persons.Count.Should().Be(personDtos.Count);
         persons.Should().HaveCount(personDtos.Count);
         
-        persons.Should().BeEquivalentTo(personDtos);
+        persons.Should().BeEquivalentTo(personDtos, options => options
+            .Excluding(ctx => ctx.Path.EndsWith("Links")));
 
         for (int i = 0; i < personDtos.Count; i++)
         {
@@ -150,7 +153,8 @@ public class PersonConverterTests
             persons[i].Address.Should().Be(personDtos[i].Address);
             persons[i].Gender.Should().Be(personDtos[i].Gender);
             
-            persons[i].Should().BeEquivalentTo(personDtos[i]);
+            persons[i].Should().BeEquivalentTo(personDtos[i], options => options
+                .Excluding(ctx => ctx.Path.EndsWith("Links")));
         }
     }
 
