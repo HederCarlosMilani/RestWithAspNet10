@@ -94,10 +94,10 @@ public class PersonService : IPersonServices
         
         var baseQuery = $@"FROM Person p WHERE 1=1 ";
         
-        if (!string.IsNullOrWhiteSpace(name)) baseQuery += $" AND (p.FirstName LIKE '%{name}%') ";
+        if (!string.IsNullOrWhiteSpace(name)) baseQuery += $" AND (p.first_name LIKE '%{name}%') ";
         
         var countQuery = $"SELECT COUNT(*) {baseQuery}";
-        var query = $@"SELECT * {baseQuery} ORDER BY p.FirstName {sort} OFFSET {offset} ROWS FETCH NEXT {size} ROWS ONLY";
+        var query = $@"SELECT * {baseQuery} ORDER BY p.first_name {sort} OFFSET {offset} ROWS FETCH NEXT {size} ROWS ONLY";
         
         return (query, countQuery, sort, size, offset);
     }
