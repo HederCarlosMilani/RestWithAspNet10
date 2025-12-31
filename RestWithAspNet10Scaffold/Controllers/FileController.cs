@@ -32,4 +32,16 @@ public class FileController(IFileService fileService) : ControllerBase
         var fileDetails = await _fileService.SaveFilesToDisk(multipleFilesUploadDto.Files);
         return Ok(fileDetails);
     }
+
+    [HttpGet("download/{fileName}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileResult))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Produces("application/octet-stream")]
+    public IActionResult DownloadFile([FromRoute] string fileName)
+    {
+        var fileBytes = _fileService.GetFile(fileName);
+        var contentType = $"application/{Path.GetExtension(fileName).TrimStart('.')}";
+        return File(fileBytes, contentType, fileName);
+    }
 }

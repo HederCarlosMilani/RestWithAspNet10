@@ -24,7 +24,13 @@ public class FileService : IFileService
     
     public byte[] GetFile(string fileName)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Download File By Name {fileName}", fileName);
+        
+        var filePath = Path.Combine(_basePath, fileName);
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException("File not found", fileName);
+        
+        return File.ReadAllBytes(filePath);
     }
 
     public async Task<FileDetailDto> SaveFileToDisk(IFormFile file)
