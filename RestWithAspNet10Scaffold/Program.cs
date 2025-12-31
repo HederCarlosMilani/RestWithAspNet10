@@ -1,4 +1,6 @@
 using RestWithAspNet10Scaffold.Configurations;
+using RestWithAspNet10Scaffold.Files.Importers.Factory;
+using RestWithAspNet10Scaffold.Files.Importers.Impl;
 using RestWithAspNet10Scaffold.Hypermedia.Filters;
 using RestWithAspNet10Scaffold.Repositories;
 using RestWithAspNet10Scaffold.Repositories.Impl;
@@ -35,6 +37,10 @@ builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+
+builder.Services.AddScoped<CsvFileImporter>();
+builder.Services.AddScoped<ExcelFileImporter>();
+builder.Services.AddScoped<FileImporterFactory>();
 
 var app = builder.Build();
 
