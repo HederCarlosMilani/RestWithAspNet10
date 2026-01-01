@@ -133,4 +133,17 @@ public class PersonController : Controller
         _logger.LogInformation("Getting persons paged: {Name}, {SortDirection}, {PageSize}, {Page}", name, sortDirection, pageSize, page);
         return Ok(_personServices.FindWithPagedSearch(name, sortDirection, pageSize, page));
     }
+    
+    [HttpPost("mass-create")]
+    [ProducesResponseType(200, Type = typeof(List<PersonDto>))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> MassCreate([FromForm] IFormFile? file)
+    {
+        _logger.LogInformation("Mass creating persons from file");
+        var persons = await _personServices.MassCreateAsync(file);
+        _logger.LogDebug($"Created {persons.Count} persons");
+        return Ok(persons);
+    }
 }
