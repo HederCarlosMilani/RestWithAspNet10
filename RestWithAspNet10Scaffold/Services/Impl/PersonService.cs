@@ -1,8 +1,8 @@
-﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using Mapster;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet10Scaffold.Data.Convert.Impl;
-using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
+using RestWithAspNet10Scaffold.Files.Exporters.Factory;
 using RestWithAspNet10Scaffold.Files.Importers.Factory;
 using RestWithAspNet10Scaffold.Hypermedia.Helpers;
 using RestWithAspNet10Scaffold.Models;
@@ -10,7 +10,7 @@ using RestWithAspNet10Scaffold.Repositories;
 
 namespace RestWithAspNet10Scaffold.Services.Impl;
 
-public class PersonService(IPersonRepository personRepository, FileImporterFactory fileImporterFactory, ILogger<PersonService> logger)
+public class PersonService(IPersonRepository personRepository, FileImporterFactory fileImporterFactory, FileExporterFactory fileExporterFactory, ILogger<PersonService> logger)
     : IPersonServices
 {
     private readonly PersonConverter _personConverter = new();
@@ -89,6 +89,23 @@ public class PersonService(IPersonRepository personRepository, FileImporterFacto
                 dto.Adapt<Person>()
                 )).ToList();
             return Task.FromResult(entities.Adapt<List<PersonDto>>());
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            throw;
+        }
+    }
+    
+    public FileContentResult ExportPagedSearch(string? name, string sortDirection, int pageSize, int page, string acceptHeader)
+    {
+        var personsPaged = FindWithPagedSearch(name, sortDirection, pageSize, page);
+        var persons = personsPaged.List.Adapt<List<PersonDto>>();
+        
+        try
+        {
+            var exporter = fileExporterFactory.GetExporter(acceptHeader);
+            return exporter.ExportFile(persons);
         }
         catch (Exception e)
         {

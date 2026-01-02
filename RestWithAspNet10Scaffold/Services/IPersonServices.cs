@@ -1,4 +1,5 @@
-﻿using RestWithAspNet10Scaffold.Data.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Hypermedia.Helpers;
 
@@ -16,4 +17,5 @@ public interface IPersonServices
     List<PersonDto> FindByName(string? firstName, string? lastName);
     PagedSearchDto<PersonDto> FindWithPagedSearch(string? name, string sortDirection, int pageSize, int page);
     Task<List<PersonDto>> MassCreateAsync(IFormFile? file);
+    FileContentResult ExportPagedSearch(string? name, string sortDirection, int pageSize, int page, string acceptHeader);
 }
