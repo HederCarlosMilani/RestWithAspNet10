@@ -5,6 +5,7 @@ using RestWithAspNet10Scaffold.Files.Exporters.Impl;
 using RestWithAspNet10Scaffold.Files.Importers.Factory;
 using RestWithAspNet10Scaffold.Files.Importers.Impl;
 using RestWithAspNet10Scaffold.Hypermedia.Filters;
+using RestWithAspNet10Scaffold.Mail;
 using RestWithAspNet10Scaffold.Repositories;
 using RestWithAspNet10Scaffold.Repositories.Impl;
 using RestWithAspNet10Scaffold.Services;
@@ -13,6 +14,15 @@ using RestWithAspNet10Scaffold.Services.Impl;
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
+
+// Replace environment variables in configuration
+var emailUsername = Environment.GetEnvironmentVariable("EMAIL_USERNAME");
+var emailPassword = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
+
+if (!string.IsNullOrEmpty(emailUsername))
+    builder.Configuration["Email:Username"] = emailUsername;
+if (!string.IsNullOrEmpty(emailPassword))
+    builder.Configuration["Email:Password"] = emailPassword;
 
 builder.AddServiceDefaults();
 builder.AddSeriLogLogging();
@@ -30,6 +40,7 @@ builder.Services.AddSwaggerConfig();
 builder.Services.AddRoutesConfig();
 builder.Services.AddCorsConfig(builder.Configuration);
 builder.Services.AddHateoasConfiguration();
+builder.Services.AddEmailConfiguration(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -40,6 +51,7 @@ builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
@@ -47,6 +59,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<CsvFileImporter>();
 builder.Services.AddScoped<ExcelFileImporter>();
 builder.Services.AddScoped<FileImporterFactory>();
+builder.Services.AddScoped<EmailSender>();
 
 builder.Services.AddScoped<CsvFileExporter>();
 builder.Services.AddScoped<ExcelFileExporter>();
