@@ -1,3 +1,4 @@
+using DotNetEnv;
 using RestWithAspNet10Scaffold.Configurations;
 using RestWithAspNet10Scaffold.Files.Exporters.Factory;
 using RestWithAspNet10Scaffold.Files.Exporters.Impl;
@@ -10,6 +11,8 @@ using RestWithAspNet10Scaffold.Services;
 using RestWithAspNet10Scaffold.Services.Impl;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
 
 builder.AddServiceDefaults();
 builder.AddSeriLogLogging();
@@ -27,6 +30,7 @@ builder.Services.AddSwaggerConfig();
 builder.Services.AddRoutesConfig();
 builder.Services.AddCorsConfig(builder.Configuration);
 builder.Services.AddHateoasConfiguration();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

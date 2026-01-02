@@ -370,3 +370,7 @@ FodyWeavers.xsd
 
 # Files uploaded to the application
 RestWithAspNet10Scaffold/Uploads/
+
+# Enviroments
+.env.local
+.env
