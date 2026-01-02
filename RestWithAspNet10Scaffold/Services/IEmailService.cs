@@ -4,6 +4,6 @@ namespace RestWithAspNet10Scaffold.Services;
 
 public interface IEmailService
 {
-    void SendSimpleEmail(string to, string subject, string body);
+    void SendSimpleEmail(EmailRequestDto emailRequestDto);
     Task SendMailWithAttachmentAsync(EmailRequestDto emailRequestDto, IFormFile attachment);
 }

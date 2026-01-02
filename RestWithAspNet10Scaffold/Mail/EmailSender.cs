@@ -35,7 +35,7 @@ public class EmailSender(EmailSettings settings, ILogger<EmailSender> logger)
     
     public EmailSender WithAttachment(string filePath)
     {
-        if (!File.Exists(filePath))
+        if (File.Exists(filePath))
         {
             _attachment = filePath;
         }
