@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
+using RestWithAspNet10Scaffold.Files.Exporters.Factory;
 using RestWithAspNet10Scaffold.Hypermedia.Helpers;
 using RestWithAspNet10Scaffold.Services;
 
@@ -132,5 +133,51 @@ public class PersonController : Controller
     {
         _logger.LogInformation("Getting persons paged: {Name}, {SortDirection}, {PageSize}, {Page}", name, sortDirection, pageSize, page);
         return Ok(_personServices.FindWithPagedSearch(name, sortDirection, pageSize, page));
+    }
+    
+    [HttpPost("mass-create")]
+    [ProducesResponseType(200, Type = typeof(List<PersonDto>))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> MassCreate([FromForm] FileUploadDto fileUploadDto)
+    {
+        _logger.LogInformation("Mass creating persons from file: {FileName}", fileUploadDto.File?.FileName);
+        var persons = await _personServices.MassCreateAsync(fileUploadDto.File);
+        _logger.LogDebug($"Created {persons.Count} persons");
+        return Ok(persons);
+    }
+    
+    [HttpGet("export/{sortDirection}/{pageSize}/{page}")]
+    [ProducesResponseType(200, Type = typeof(FileContentResult))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    [Produces(MediaTypes.ApplicationExcel, MediaTypes.ApplicationCsv)]
+    public IActionResult ExportPagedSearch([FromQuery] string? name, [FromRoute] string sortDirection, [FromRoute] int pageSize, [FromRoute] int page, [FromHeader(Name = "Accept")] string acceptHeader)
+    {
+        _logger.LogInformation("Exporting persons paged: {Name}, {SortDirection}, {PageSize}, {Page}, {AcceptHeader}", name, sortDirection, pageSize, page, acceptHeader);
+        if (string.IsNullOrEmpty(acceptHeader)) 
+        {
+            _logger.LogWarning("Accept header is empty.");
+            return BadRequest("Accept header is required.");
+        }
+        var fileResult = _personServices.ExportPagedSearch(name, sortDirection, pageSize, page, acceptHeader);
+
+        try
+        {
+            _logger.LogDebug("Exported persons to file with content type: {ContentType}", fileResult.ContentType);
+            return fileResult;
+        } 
+        catch (NotSupportedException ex)
+        {
+            _logger.LogError(ex, "Accept header format not supported: {AcceptHeader}", acceptHeader);
+            return StatusCode(StatusCodes.Status415UnsupportedMediaType, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting persons to file.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while exporting the file.");
+        }
     }
 }

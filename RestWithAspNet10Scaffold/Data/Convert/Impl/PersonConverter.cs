@@ -28,7 +28,7 @@ public class PersonConverter : IParser<Person, PersonDto>, IParser<PersonDto, Pe
         return  origins.Select(o => Parser(o)).ToList();
     }
 
-    public PersonDto Parser(Person origin)
+    public PersonDto Parser(Person? origin)
     {
         if (origin == null) return null;
         
