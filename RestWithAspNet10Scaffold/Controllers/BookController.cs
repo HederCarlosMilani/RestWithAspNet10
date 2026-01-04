@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Models;
@@ -8,6 +9,7 @@ namespace RestWithAspNet10Scaffold.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("Bearer")]
 public class BookController : Controller
 {   
     private readonly IBookService _bookService;

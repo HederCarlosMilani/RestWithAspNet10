@@ -55,12 +55,16 @@ builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IUserAuthService, UserAuthService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IPasswordHasher, Sha256PasswordHasher>();
+builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
+
 builder.Services.AddScoped<CsvFileImporter>();
 builder.Services.AddScoped<ExcelFileImporter>();
 builder.Services.AddScoped<FileImporterFactory>();

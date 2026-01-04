@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet10Scaffold.Data.Dto;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
@@ -11,6 +12,7 @@ namespace RestWithAspNet10Scaffold.Controllers;
 [ApiController]
 [Route("[controller]")]
 [EnableCors("LocalPolicy")]
+[Authorize("Bearer")]
 public class PersonController : Controller
 {
     private readonly IPersonServices _personServices;

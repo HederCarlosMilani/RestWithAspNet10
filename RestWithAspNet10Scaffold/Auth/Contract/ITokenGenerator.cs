@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using RestWithAspNet10Scaffold.Models;
 
 namespace RestWithAspNet10Scaffold.Auth.Contract;
 
