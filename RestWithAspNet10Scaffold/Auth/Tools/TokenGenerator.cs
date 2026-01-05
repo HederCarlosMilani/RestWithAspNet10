@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using RestWithAspNet10Scaffold.Auth.Configuration;
@@ -29,7 +30,10 @@ public class TokenGenerator(TokenConfig configurations) : ITokenGenerator
 
     public string GenerateRefreshToken()
     {
-        throw new NotImplementedException();
+        var randomNumber = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
