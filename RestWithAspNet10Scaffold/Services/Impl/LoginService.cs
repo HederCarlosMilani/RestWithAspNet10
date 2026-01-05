@@ -35,6 +35,7 @@ public class LoginService(
             //new Claim(ClaimTypes.Role, user.Role.ToString()),
             new Claim("UserId", user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
         };
 
         var accessToken = tokenGenerator.GenerateAccessToken(claims);
@@ -62,7 +63,19 @@ public class LoginService(
 
     public TokenDto? ValidateCredentials(TokenDto tokenDto)
     {
-        throw new NotImplementedException();
+        var principal = tokenGenerator.GetPrincipalFromExpiredToken(tokenDto.AccessToken);
+        if (principal == null) return null;
+
+        var userName = principal.Identity?.Name;
+        if (string.IsNullOrEmpty(userName)) return null;
+
+        var user = userAuthService.FindByUserName(userName);
+        if (user == null) return null;
+
+        if (user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            return null;
+
+        return GenerateToken(user, principal.Claims);
     }
 
     public bool RevokeToken(string userName)

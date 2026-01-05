@@ -32,4 +32,26 @@ public class AuthController(
         logger.LogInformation("User {UserName} signed in successfully", userDto.UserName);
         return Ok(token);
     }
+
+    [HttpPost("refresh")]
+    [AllowAnonymous]
+    public IActionResult Refresh([FromBody] TokenDto tokenDto)
+    {
+        if (tokenDto == null || string.IsNullOrWhiteSpace(tokenDto.AccessToken) ||
+            string.IsNullOrWhiteSpace(tokenDto.RefreshToken))
+        {
+            logger.LogWarning("Refresh attempt with invalid payload");
+            return BadRequest("AccessToken and RefreshToken must be provided");
+        }
+
+        var token = loginService.ValidateCredentials(tokenDto);
+        if (token == null)
+        {
+            logger.LogWarning("Failed token refresh attempt");
+            return Unauthorized("Invalid tokens");
+        }
+
+        logger.LogInformation("Token refreshed successfully");
+        return Ok(token);
+    }
 }
