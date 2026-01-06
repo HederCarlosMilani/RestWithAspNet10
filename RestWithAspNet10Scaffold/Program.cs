@@ -79,8 +79,12 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
-// Necessário seguir está ordem.
-app.UseHttpsRedirection();
+// Necessário seguir esta ordem.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -92,4 +96,6 @@ app.UseSwaggerSpecification();
 app.UseScalarSpecification();
 app.UseHateoasRoutes();
 
-app.Run();
+// app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://*:{port}");
