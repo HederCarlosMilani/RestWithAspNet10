@@ -3,10 +3,9 @@ using RestWithAspNet10Scaffold.Models;
 
 namespace RestWithAspNet10Scaffold.Contexts;
 
-public class MSSQLContext : DbContext
+public class MSSQLContext(DbContextOptions<MSSQLContext> options) : DbContext(options)
 {
-    public MSSQLContext(DbContextOptions<MSSQLContext> options) : base(options) { }
-    
     public DbSet<Person> Persons { get; set; }
     public DbSet<Book> Books { get; set; }
+    public DbSet<User> Users { get; set; }
 }

@@ -1,4 +1,6 @@
 using DotNetEnv;
+using RestWithAspNet10Scaffold.Auth.Contract;
+using RestWithAspNet10Scaffold.Auth.Tools;
 using RestWithAspNet10Scaffold.Configurations;
 using RestWithAspNet10Scaffold.Files.Exporters.Factory;
 using RestWithAspNet10Scaffold.Files.Exporters.Impl;
@@ -47,14 +49,21 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddDatabaseConfig(builder.Configuration);
 builder.Services.AddEvolveConfig(builder.Configuration, builder.Environment);
+builder.Services.AddAuthConfig(builder.Configuration);
 
 builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IUserAuthService, UserAuthService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IPasswordHasher, Sha256PasswordHasher>();
+builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 
 builder.Services.AddScoped<CsvFileImporter>();
 builder.Services.AddScoped<ExcelFileImporter>();
@@ -70,9 +79,11 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
-
-app.UseAuthorization();
+// Necessário seguir está ordem.
+app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseCorsConfig();
 
 app.MapControllers();

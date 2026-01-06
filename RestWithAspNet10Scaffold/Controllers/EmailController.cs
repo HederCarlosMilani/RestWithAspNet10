@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
 using RestWithAspNet10Scaffold.Services;
@@ -7,6 +8,7 @@ namespace RestWithAspNet10Scaffold.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("Bearer")]
 public class EmailController(ILogger<EmailController> logger, IEmailService emailService)
     : Controller
 {
