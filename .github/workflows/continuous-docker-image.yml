@@ -17,10 +17,10 @@ jobs:
                 -e "ACCEPT_EULA=Y" \
                 -e "SA_PASSWORD=SuaSenhaForte123" \
                 -e "MSSQL_PID=Express" \
-                -p 1433:1433 \
                 mcr.microsoft.com/mssql/server:2022-latest
-            timeout 120s bash -c "until docker exec sqlserver_test /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'SuaSenhaForte123' -Q 'SELECT 1' &> /dev/null; do sleep 1; done"
-          
+            timeout 90s bash -c " until docker exec sqlserver_test /opt/mssql-tools/bin/sqlcmd \
+              -S localhost -U sa -P 'SuaSenhaForte123' -Q 'SELECT 1' &> /dev/null; do echo 'Aguardando SQL Server...' sleep 2 done || (echo 'SQL Server não iniciou a tempo' docker logs sqlserver_test exit 1 )"
+      
       - name: Create SQL Server Database
         run: |
             docker exec -i sqlserver_test /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'SuaSenhaForte123' <<-EOSQL
