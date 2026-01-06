@@ -2,7 +2,7 @@
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
+EXPOSE 8443
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -21,4 +21,6 @@ RUN dotnet publish "./RestWithAspNet10Scaffold.csproj" -c $BUILD_CONFIGURATION -
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY RestWithAspNet10Scaffold/db/ ./db/
+# COPY db/ ./db/ # Alternative if you want to copy from local context
 ENTRYPOINT ["dotnet", "RestWithAspNet10Scaffold.dll"]
