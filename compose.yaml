@@ -1,0 +1,45 @@
+﻿services:
+  rest-with-asp-net-10-scaffold:
+    image: hedermilani/rest-with-asp-net-10-scaffold:latest
+    build:
+      context: .
+      dockerfile: RestWithAspNet10Scaffold/Dockerfile
+    container_name: RestWithAspNet10Scaffold
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MSSQLServerConnection__MSSQLServerConnectionString=Data Source=sqlserver,1433;Initial Catalog=AspNet;User Id=sa;Password=SuaSenhaForte123;TrustServerCertificate=True;
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/https:/root/.aspnet/https:ro
+    depends_on:
+      - sqlserver
+    restart: unless-stopped
+    networks:
+      - RestWithAspNet10ScaffoldNetwork
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: SqlServer
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SuaSenhaForte123
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - RestWithAspNet10ScaffoldNetwork
+
+volumes:
+    sqlserver-data:
+      
+networks:
+  RestWithAspNet10ScaffoldNetwork:
+    driver: bridge

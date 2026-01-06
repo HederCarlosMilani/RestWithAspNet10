@@ -1,0 +1,42 @@
+﻿name: Continuous Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create SQL Server Container
+        run: |
+            docker run -d --name sqlserver_test \
+                -e "ACCEPT_EULA=Y" \
+                -e "SA_PASSWORD=SuaSenhaForte123" \
+                -e "MSSQL_PID=Express" \
+                -p 1433:1433 \
+                mcr.microsoft.com/mssql/server:2022-latest
+            timeout 30s bash -c "until docker exec sqlserver_test /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'SuaSenhaForte123' -Q 'SELECT 1' &> /dev/null; do sleep 1; done"
+          
+      - name: Create SQL Server Database
+        run: |
+            docker exec -i sqlserver_test /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'SuaSenhaForte123' <<-EOSQL
+                IF DB_ID('AspNet') IS NULL CREATE DATABASE [AspNet];
+            EOSQL
+      
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+        
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+      
+      - name: Set up .Net10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'

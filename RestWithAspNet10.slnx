@@ -1,5 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
   <Project Path="RestWithAspNet10.AppHost/RestWithAspNet10.AppHost.csproj" />
   <Project Path="RestWithAspNet10.ServiceDefaults/RestWithAspNet10.ServiceDefaults.csproj" />
   <Project Path="RestWithAspNet10Scaffold/RestWithAspNet10Scaffold.csproj" />
+  <Project Path="RestWithAspNet10Scafold.Tests/RestWithAspNet10Scafold.Tests.csproj" />
 </Solution>
