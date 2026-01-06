@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RestWithAspNet10Scaffold.Data.Dto.V1;
@@ -13,7 +14,8 @@ namespace RestWithAspNet10Scafold.Tests.IntegrationTests.Person;
 public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
 {
     private readonly HttpClient _client;
-    private static PersonDto _person;
+    private static PersonDto? _person;
+    private static TokenDto? _tokenDto;
 
     public PersonControllerIntegrationTests(SqlServerFixture sqlFixture)
     {
@@ -24,6 +26,30 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
                 AllowAutoRedirect = false,
                 BaseAddress = new Uri("http://localhost")
             });
+    }
+    
+    [Fact (DisplayName = "00 - Authenticate"), TestPriority(0)]
+    public async Task TestAuthenticate()
+    {
+        // Arrange
+        var userDto = new UserDto
+        {
+            UserName = "heder",
+            Password = "admin123"
+        };
+        
+        // Act
+        var response = await _client.PostAsJsonAsync("/auth/signin", userDto);
+        
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        
+        var token = await response.Content.ReadFromJsonAsync<TokenDto>();
+        token.Should().NotBeNull();
+        token!.AccessToken.Should().NotBeNullOrWhiteSpace();
+        token.RefreshToken.Should().NotBeNullOrWhiteSpace();
+        
+        _tokenDto = token;
     }
 
     [Fact(DisplayName = "01 - Create Person"), TestPriority(1)]
@@ -38,6 +64,9 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
             Gender = "Male",
             Enabled = true
         };
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
         
         // Act
         var response = await _client.PostAsJsonAsync("/person", personToCreate);
@@ -61,6 +90,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     public async Task TestGetPersonById()
     {
         // Act
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+        
         var response = await _client.GetAsync($"/person/{_person.Id}");
 
         // Assert
@@ -76,6 +109,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     public async Task TestGetAllPersons()
     {
         // Act
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+
         var response = await _client.GetAsync("/person");
 
         // Assert
@@ -92,6 +129,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     {
         // Arrange
         _person.LastName = "UpdatedLastName";  
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+
         
         // Act
         var response = await _client.PutAsJsonAsync("/person", _person);
@@ -110,6 +151,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     public async Task TestDisablePerson()
     {
         // Act
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+
         var response = await _client.PatchAsync($"/person/disable/{_person.Id}", null);
         
         // Assert
@@ -124,6 +169,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     public async Task TestEnablePerson()
     {
         // Act
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+
         var response = await _client.PatchAsync($"/person/enable/{_person.Id}", null);
 
         // Assert
@@ -138,6 +187,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     public async Task TestDeletePerson()
     {
         // Act
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+
         var response = await _client.DeleteAsync($"/person/{_person.Id}");
 
         // Assert
@@ -149,6 +202,10 @@ public class PersonControllerIntegrationTests : IClassFixture<SqlServerFixture>
     public async Task TestGetPagedPersons()
     {
         // Act
+        
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _tokenDto!.AccessToken);
+
         int pageSize = 10;
         int page = 1;
         var response = await _client.GetAsync($"/person/asc/{pageSize}/{page}");
