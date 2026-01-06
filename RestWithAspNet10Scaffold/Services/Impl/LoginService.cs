@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Mapster;
 using Microsoft.IdentityModel.JsonWebTokens;
 using RestWithAspNet10Scaffold.Auth.Configuration;
 using RestWithAspNet10Scaffold.Auth.Contract;
@@ -82,18 +83,26 @@ public class LoginService(
     {
         logger.LogInformation("Revoking token for user {UserName}", userName);
         
-        var user = userAuthService.FindByUserName(userName);
-        if (user == null) return false;
-        
-        user.RefreshToken = null;
-        user.RefreshTokenExpiryTime = null;
-        userAuthService.Update(user);
-        
-        return true;
+        return userAuthService.RevokeToken(userName);
     }
 
     public AccountCredentialsDto Create(AccountCredentialsDto accountDto)
     {
-        throw new NotImplementedException();
+        var existingUser = userAuthService.FindByUserName(accountDto.UserName);
+        if (existingUser != null)
+        {
+            throw new InvalidOperationException("User already exists");
+        }
+
+        var newUser = userAuthService.Create(accountDto);
+
+        logger.LogInformation("Created new user {UserName}", newUser.UserName);
+
+        return new AccountCredentialsDto
+        {
+            UserName = newUser.UserName,
+            FullName = newUser.FullName,
+            Password = "*****************"
+        };
     }
 }

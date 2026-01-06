@@ -76,4 +76,20 @@ public class AuthController(
         logger.LogInformation("Token revoked successfully for user {UserName}", userName);
         return NoContent();
     }
+
+    [HttpPost("create")]
+    [AllowAnonymous]
+    public IActionResult Create([FromBody] AccountCredentialsDto accountDto)
+    {
+        if (accountDto == null || string.IsNullOrWhiteSpace(accountDto.UserName) ||
+            string.IsNullOrWhiteSpace(accountDto.Password))
+        {
+            logger.LogWarning("Create account attempt with invalid payload");
+            return BadRequest("UserName and Password must be provided");
+        }
+
+        var createdAccount = loginService.Create(accountDto);
+        logger.LogInformation("Account created successfully for user {UserName}", accountDto.UserName);
+        return Ok(createdAccount);
+    }
 }
