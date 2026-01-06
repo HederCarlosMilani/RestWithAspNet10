@@ -5,10 +5,20 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5013",
+      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPIRE_ALLOW_UNSECURED_TRANSPORT": "true"
+      }
+    },
+    
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:8443",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
