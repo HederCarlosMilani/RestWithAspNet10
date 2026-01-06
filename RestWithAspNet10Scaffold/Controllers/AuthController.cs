@@ -54,4 +54,26 @@ public class AuthController(
         logger.LogInformation("Token refreshed successfully");
         return Ok(token);
     }
+
+    [HttpPost("revoke")]
+    [Authorize]
+    public IActionResult Revoke()
+    {
+        var userName = User.Identity?.Name;
+        if (string.IsNullOrWhiteSpace(userName))
+        {
+            logger.LogWarning("Revoke attempt with invalid user");
+            return BadRequest("Invalid user");
+        }
+
+        var result = loginService.RevokeToken(userName);
+        if (!result)
+        {
+            logger.LogWarning("Failed to revoke token for user {UserName}", userName);
+            return BadRequest("Failed to revoke token");
+        }
+
+        logger.LogInformation("Token revoked successfully for user {UserName}", userName);
+        return NoContent();
+    }
 }

@@ -80,7 +80,16 @@ public class LoginService(
 
     public bool RevokeToken(string userName)
     {
-        throw new NotImplementedException();
+        logger.LogInformation("Revoking token for user {UserName}", userName);
+        
+        var user = userAuthService.FindByUserName(userName);
+        if (user == null) return false;
+        
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryTime = null;
+        userAuthService.Update(user);
+        
+        return true;
     }
 
     public AccountCredentialsDto Create(AccountCredentialsDto accountDto)
