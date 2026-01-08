@@ -39,7 +39,6 @@ jobs:
 
       - name: Restore Dependencies
         run: dotnet restore RestWithAspNet10.slnx
-        working-directory: 31_DeploingOurAppToAzure/RestWithAspNet10
 
       - name: Build ASP.NET 10 App
         run: dotnet build RestWithAspNet10.slnx --configuration Release --no-restore
