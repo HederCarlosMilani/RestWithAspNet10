@@ -43,19 +43,16 @@ jobs:
 
       - name: Build ASP.NET 10 App
         run: dotnet build RestWithAspNet10.slnx --configuration Release --no-restore
-        working-directory: 31_DeploingOurAppToAzure/RestWithAspNet10
 
       - name: Test ASP.NET 10 App
         run: dotnet test RestWithAspNet10.slnx --configuration Release --no-build --logger "console;verbosity=detailed"
-        working-directory: 31_DeploingOurAppToAzure/RestWithAspNet10
 
       - name: Docker Compose Build
         run: docker compose build
-        working-directory: 31_DeploingOurAppToAzure/RestWithAspNet10
 
       - name: Push to Docker Hub Container Registry
         run: |
-          docker tag ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-erudio:latest ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-erudio:${{github.run_id}}
+          docker tag ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-scaffold:latest ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-scaffold:${{github.run_id}}
           
-          docker push ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-erudio:latest
-          docker push ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-erudio:${{github.run_id}}
+          docker push ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-scaffold:latest
+          docker push ${{secrets.DOCKER_USERNAME}}/rest-with-asp-net-10-scaffold:${{github.run_id}}
